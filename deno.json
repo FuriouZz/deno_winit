@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "dev": "deno task build:winit && deno task example",
+    "example": "deno run -A --unstable-ffi example.ts",
+    "build:winit": "cd rust && cargo build"
+  }
+}
