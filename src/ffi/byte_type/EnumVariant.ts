@@ -1,10 +1,10 @@
-import { u32, Options } from "../../deps/byte_type.ts";
+import { u32, Options } from "../../../deps/byte_type.ts";
 import SizedStruct from "./SizedStruct.ts";
-import { IEnumSchema, IStructType } from "./types.ts";
+import { IEnumSchema, ISizedStructType } from "./types.ts";
 
 export default class EnumVariant<
   T extends IEnumSchema,
-  V extends IStructType<T> = IStructType<T>
+  V extends ISizedStructType<T> = ISizedStructType<T>
 > extends SizedStruct<T, V> {
   #tag: number;
 

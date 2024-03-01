@@ -1,8 +1,8 @@
-import { SizedType } from "../../../deps/byte_type.ts";
+import { SizedType } from "../../../../deps/byte_type.ts";
 import SizedStruct from "../SizedStruct.ts";
-import { IStructFields, IStructSchema } from "../types.ts";
+import { ISizedStructFields, ISizedStructSchema } from "../types.ts";
 
-export const createFields = (schema: IStructSchema) => {
+export const createFields = (schema: ISizedStructSchema) => {
   const getType = (
     key: symbol | string,
     value: unknown
@@ -12,7 +12,7 @@ export const createFields = (schema: IStructSchema) => {
     if (value instanceof SizedType) {
       type = value;
     } else if (typeof value === "object" && value !== null) {
-      const s = value as IStructSchema;
+      const s = value as ISizedStructSchema;
       type = new SizedStruct(s, getBiggestAlignment(s));
     }
 
@@ -20,7 +20,7 @@ export const createFields = (schema: IStructSchema) => {
     return [key, type];
   };
 
-  const fields: IStructFields = [
+  const fields: ISizedStructFields = [
     ...Object.getOwnPropertySymbols(schema).map((sym) =>
       getType(sym, schema[sym])
     ),
@@ -35,7 +35,7 @@ export const paddingNeededFor = (offset: number, alignment: number) => {
   return misalignment > 0 ? alignment - misalignment : 0;
 };
 
-export const getSizeAndOffsets = (fields: IStructFields, alignment: number) => {
+export const getSizeAndOffsets = (fields: ISizedStructFields, alignment: number) => {
   let offset = 0;
   const offsets: number[] = [];
 
@@ -49,7 +49,7 @@ export const getSizeAndOffsets = (fields: IStructFields, alignment: number) => {
   return { offsets, size };
 };
 
-export const getBiggestAlignment = (schema: IStructSchema) => {
+export const getBiggestAlignment = (schema: ISizedStructSchema) => {
   return Object.values(schema).reduce((biggest: number, entry) => {
     if (entry instanceof SizedType) {
       biggest = Math.max(biggest, entry.byteAlignment);

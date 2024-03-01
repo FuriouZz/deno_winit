@@ -45,8 +45,8 @@ pub enum MouseButton {
 #[derive(Debug)]
 #[repr(C)]
 pub enum ElementState {
-    Pressed,
-    Released,
+    Pressed = 1,
+    Released = 0,
 }
 
 impl From<WinitWindowEvent> for WindowEvent {

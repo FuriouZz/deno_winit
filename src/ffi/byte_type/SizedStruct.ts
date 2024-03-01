@@ -1,16 +1,17 @@
-import { SizedType, Options } from "../../deps/byte_type.ts";
-import type { IStructSchema, IStructType, IStructFields } from "./types.ts";
-import { createFields, getSizeAndOffsets } from "./utils/struct.ts";
+import { SizedType, Options } from "../../../deps/byte_type.ts";
+import type { ISizedStructSchema, ISizedStructType, ISizedStructFields } from "./types.ts";
+import { createFields, getBiggestAlignment, getSizeAndOffsets } from "./utils/struct.ts";
 
 export default class SizedStruct<
-  T extends IStructSchema,
-  V extends IStructType<T> = IStructType<T>
+  T extends ISizedStructSchema,
+  V extends ISizedStructType<T> = ISizedStructType<T>
 > extends SizedType<V> {
-  #fields: IStructFields;
+  #fields: ISizedStructFields;
   #offsets: number[];
 
-  constructor(schema: T, byteAlignment: number) {
+  constructor(schema: T, byteAlignment?: number) {
     const fields = createFields(schema);
+    byteAlignment = byteAlignment ?? getBiggestAlignment(schema);
     const { offsets, size } = getSizeAndOffsets(fields, byteAlignment);
 
     super(size, byteAlignment);

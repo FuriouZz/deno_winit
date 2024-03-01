@@ -1,4 +1,4 @@
-import { f64, u32 } from "../../deps/byte_type.ts";
+import { f64, u32 } from "../../../deps/byte_type.ts";
 import SizedStruct from "./SizedStruct.ts";
 import { assertEquals } from "https://deno.land/std@0.216.0/assert/mod.ts";
 
@@ -12,7 +12,7 @@ Deno.test("sized struct", () => {
       x: f64,
       y: f64,
     },
-  });
+  }, 8);
 
   assertEquals(myStruct.byteSize, 24);
   assertEquals(myStruct.byteAlignment, 8);

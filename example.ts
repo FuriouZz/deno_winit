@@ -1,31 +1,12 @@
-import { Event } from "./src/events.ts";
+import { Window, EventLoop } from "./mod.ts";
 
-function pollEvents(callback: (event: unknown) => void) {
-  const onPollEvents = new Deno.UnsafeCallback(
-    {
-      parameters: ["pointer"],
-      result: "void",
-    },
-    (e) => {
-      if (e === null) return;
+const eventLoop = new EventLoop();
+const window = new Window(eventLoop, {
+  title: "hello world",
+});
 
-      try {
-        const view = new Deno.UnsafePointerView(e);
-
-        const event = Event.read(view as unknown as DataView);
-        callback(event);
-      } catch (err) {
-        console.error("Failed to read event");
-        console.error(err);
-      }
-    }
-  );
-
-  const lib = Deno.dlopen("./rust/target/debug/libwinit.dylib", {
-    poll_events: { parameters: ["function"], result: "void" },
-  });
-
-  lib.symbols.poll_events(onPollEvents.pointer);
+for await (const event of eventLoop.pollEvents()) {
+  window.onEvent(event);
+  console.log(event);
+  if (window.closed) break;
 }
-
-pollEvents(console.log);

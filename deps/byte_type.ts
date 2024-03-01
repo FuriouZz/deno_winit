@@ -14,13 +14,17 @@ export {
   U64,
   F32,
   F64,
+  bool,
   u8,
   u16,
   u32,
   u64,
   f64,
   i32,
+  Arrays,
+  Strings,
   getBiggestAlignment,
+  isLittleEndian,
   type Options,
 } from "https://deno.land/x/byte_type@0.3.0/mod.ts";
 

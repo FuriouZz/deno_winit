@@ -1,5 +1,6 @@
-import { f64, i32, u32 } from "../../deps/byte_type.ts";
+import { f64, i32, u32 } from "../../../deps/byte_type.ts";
 import Enum from "../byte_type/Enum.ts";
+import { IEnumSchema } from "../byte_type/types.ts";
 
 export enum WindowEventType {
   CloseRequested = 0x00,
@@ -11,7 +12,7 @@ export enum WindowEventType {
   MouseInput = 0x06,
 }
 
-export const WindowEvent = new Enum(
+export const WindowEventLayout = new Enum(
   {
     [WindowEventType.CloseRequested]: {},
     [WindowEventType.Moved]: {
@@ -39,6 +40,12 @@ export const WindowEvent = new Enum(
       state: u32,
       button: u32,
     },
-  },
-  { enumMap: WindowEventType }
+  }
 );
+
+export type WindowEvent = typeof WindowEventLayout extends Enum<
+  Record<WindowEventType, IEnumSchema>,
+  infer V
+>
+  ? V
+  : undefined;

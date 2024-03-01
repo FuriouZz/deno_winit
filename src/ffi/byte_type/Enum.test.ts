@@ -1,4 +1,4 @@
-import { f64, u32 } from "../../deps/byte_type.ts";
+import { f64, u32 } from "../../../deps/byte_type.ts";
 import Enum from "./Enum.ts";
 import { assertEquals } from "https://deno.land/std@0.216.0/assert/mod.ts";
 
@@ -33,34 +33,30 @@ Deno.test("enum", () => {
 
   event.write(
     {
-      [WindowEvent.CursorMoved]: {
-        device_id: 36,
-        position: { x: 102.5, y: 30.7384 },
-      },
+      type: WindowEvent.CursorMoved,
+      device_id: 36,
+      position: { x: 102.5, y: 30.7384 },
     },
     dt
   );
 
   assertEquals(event.read(dt), {
-    [WindowEvent.CursorMoved]: {
-      device_id: 36,
-      position: { x: 102.5, y: 30.7384 },
-    },
+    type: WindowEvent.CursorMoved,
+    device_id: 36,
+    position: { x: 102.5, y: 30.7384 },
   });
 
   event.write(
     {
-      [WindowEvent.CursorEntered]: {
-        device_id: 20,
-      },
+      type: WindowEvent.CursorEntered,
+      device_id: 20,
     },
     dt
   );
 
   assertEquals(event.read(dt), {
-    [WindowEvent.CursorEntered]: {
-      device_id: 20,
-    },
+    type: WindowEvent.CursorEntered,
+    device_id: 20,
   });
 });
 
@@ -88,16 +84,14 @@ Deno.test("sub enum", () => {
 
   event.write(
     {
-      [Event.WindowEvent]: {
-        window_id: 11,
-        event: {
-          [WindowEvent.CursorMoved]: {
-            device_id: 36,
-            position: {
-              x: 102.5,
-              y: 30.7384,
-            },
-          },
+      type: Event.WindowEvent,
+      window_id: 11,
+      event: {
+        type: WindowEvent.CursorMoved,
+        device_id: 36,
+        position: {
+          x: 102.5,
+          y: 30.7384,
         },
       },
     },
@@ -105,16 +99,14 @@ Deno.test("sub enum", () => {
   );
 
   assertEquals(event.read(dt), {
-    [Event.WindowEvent]: {
-      window_id: 11,
-      event: {
-        [WindowEvent.CursorMoved]: {
-          device_id: 36,
-          position: {
-            x: 102.5,
-            y: 30.7384,
-          },
-        },
+    type: Event.WindowEvent,
+    window_id: 11,
+    event: {
+      type: WindowEvent.CursorMoved,
+      device_id: 36,
+      position: {
+        x: 102.5,
+        y: 30.7384,
       },
     },
   });
